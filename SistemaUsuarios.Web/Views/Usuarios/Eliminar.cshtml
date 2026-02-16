@@ -1,0 +1,82 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Eliminar Usuario";
+    // Capturamos el ID que viene del controlador
+    var idAEliminar = Model;
+}
+
+<div class="container mt-5">
+    <div class="card border-danger shadow">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">Confirmar Eliminación</h3>
+        </div>
+        <div class="card-body text-center">
+            <p class="lead">¿Estás seguro de que deseas desactivar el registro con <strong>ID: @idAEliminar</strong>?</p>
+            
+            @* 1. Token indispensable para [ValidateAntiForgeryToken] *@
+            @Html.AntiForgeryToken()
+
+            @* 2. Guardamos el ID en un campo oculto para el JS *@
+            <input type="hidden" id="usuarioId" value="@idAEliminar" />
+
+            <div class="mt-4">
+                <button type="button" id="btnConfirmarEliminar" class="btn btn-danger btn-lg px-4 me-2">
+                    <i class="bi bi-trash"></i> Sí, Desactivar
+                </button>
+                <a href="@Url.Action("Lista", "Usuarios")" class="btn btn-secondary btn-lg px-4">
+                    Cancelar
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* Asegúrate de que jQuery esté cargado *@
+    <script src="https://code.jquery.com"></script>
+
+    <script>
+        $(document).ready(function () {
+        $("#btnConfirmarEliminar").click(function (e) {
+        e.preventDefault();
+
+        const id = $("#usuarioId").val();
+        const token = $('input[name="__RequestVerificationToken"]').val();
+
+        // Validación de seguridad en el cliente
+        if (!id || id == "0") {
+        alert("Error: No se pudo identificar el ID del usuario.");
+        return;
+        }
+
+        const $btn = $(this);
+        $btn.prop('disabled', true).text('Procesando...');
+
+        // 3. Llamada AJAX al método POST Delete
+        $.ajax({
+        url: '@Url.Action("Delete", "Usuarios")',
+        type: "POST",
+        data: {
+        id: id,
+        __RequestVerificationToken: token  // Token en el body
+        },
+        success: function (response) {
+        if (response.success) {
+        alert(response.message);
+        // Redirigir al listado principal
+        window.location.href = '@Url.Action("Lista", "Usuarios")';
+        } else {
+        alert("Error: " + response.message);
+        $btn.prop('disabled', false).text('Sí, Eliminar');
+        }
+        },
+        error: function (xhr) {
+        alert("Ocurrió un error crítico en el servidor.");
+        console.error(xhr.responseText);
+        $btn.prop('disabled', false).text('Sí, Eliminar');
+        }
+        });
+        });
+        });
+    </script>
+}

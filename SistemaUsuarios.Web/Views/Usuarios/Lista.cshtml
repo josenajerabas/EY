@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "Listado de Usuarios";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-people-fill"></i> Listado de Usuarios</h1>
+        <a href="@Url.Action("Registrar", "Usuarios")" class="btn btn-success">
+            <i class="bi bi-person-plus"></i> Nuevo Usuario
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-hover" id="tablaUsuarios">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre Completo</th>
+                        <th>Usuario</th>
+                        <th>Correo</th>
+                        <th>Estatus</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpoTabla">
+                    <!-- Los datos se cargarán aquí con AJAX -->
+                </tbody>
+            </table>
+            <!-- Spinner de carga -->
+            <div id="loader" class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com"></script>
+    <script>
+        $(document).ready(function () {
+        cargarUsuarios();
+        });
+
+        function cargarUsuarios() {
+        $.ajax({
+        url: '@Url.Action("GetAll", "Usuarios")',
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+        $('#loader').hide();
+            
+        if (response.success) {
+        let html = "";
+        // Recorremos cada usuario 'u' que viene de la base de datos
+        response.data.forEach(u => {
+        const badgeClass = u.estatus ? "bg-success" : "bg-danger";
+        const statusText = u.estatus ? "Activo" : "Inactivo";
+
+        html += `
+        <tr>
+        <td>${u.id}</td>
+        <td>${u.nombreCompleto}</td>
+        <td>${u.nombreUsuario}</td>
+        <td>${u.correo}</td>
+        <td><span class="badge ${badgeClass}">${statusText}</span></td>
+        <td>
+        <!-- ESTOS SON LOS ENLACES QUE CONECTAN LAS VISTAS -->
+        <a href="/Usuarios/Actualizar/${u.id}" class="btn btn-warning btn-sm">
+        <i class="bi bi-pencil"></i> Editar
+        </a>
+        <a href="/Usuarios/Eliminar/${u.id}" class="btn btn-danger btn-sm">
+        <i class="bi bi-trash"></i> Desactivar
+        </a>
+        </td>
+        </tr>`;
+        });
+        // Inyectamos todas las filas en el cuerpo de la tabla
+        $("#cuerpoTabla").html(html);
+        } else {
+        alert("Error: " + response.message);
+        }
+        },
+        error: function (xhr) {
+        $('#loader').hide();
+        console.error("Error crítico:", xhr.responseText);
+        }
+        });
+        }
+    </script>
+}

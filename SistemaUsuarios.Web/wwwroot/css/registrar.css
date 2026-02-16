@@ -1,0 +1,66 @@
+﻿
+.form-control:focus {
+    border-color: #FFE600;
+    box-shadow: 0 0 0 0.2rem rgba(255, 230, 0, 0.25);
+}
+
+.input-group-text {
+    border-color: #dee2e6;
+}
+
+.form-check-input:checked {
+    background-color: #FFE600;
+    border-color: #FFE600;
+}
+
+.card {
+    transition: transform 0.3s ease;
+}
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+.btn-primary {
+    background-color: #FFE600;
+    border-color: #FFE600;
+    color: #2E2E38;
+    font-weight: 600;
+}
+
+    .btn-primary:hover {
+        background-color: #E6CF00;
+        border-color: #E6CF00;
+        color: #2E2E38;
+    }
+
+.btn-secondary {
+    background-color: #2E2E38;
+    border-color: #2E2E38;
+}
+
+    .btn-secondary:hover {
+        background-color: #1E1E1E;
+        border-color: #1E1E1E;
+    }
+
+.alert-success-custom {
+    background: linear-gradient(135deg, #FFE600 0%, #E6CF00 100%);
+    color: #2E2E38;
+    border: none;
+    border-radius: 10px;
+    padding: 1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.alert-danger-custom {
+    background-color: #fee;
+    color: #d93025;
+    border: 1px solid #d93025;
+    border-radius: 10px;
+    padding: 1rem;
+    font-weight: 600;
+}
+
+

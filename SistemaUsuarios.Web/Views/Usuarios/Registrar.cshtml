@@ -1,0 +1,259 @@
+﻿@model CapaNegocio.DTOs.UsuarioDTO
+
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<link rel="stylesheet" href="~/css/registrar.css" asp-append-version="true" />
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="mb-1">
+                        <i class="bi bi-person-plus-fill" style="color: #FFE600;"></i>
+                        Crear Usuario
+                    </h1>
+                    <p class="text-muted">Complete el formulario para registrar un nuevo usuario</p>
+                </div>
+                  @if (User.Identity.IsAuthenticated)
+                {
+                    <a href="@Url.Action("Lista", "Usuarios")" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Volver
+                    </a>
+                }
+            </div>
+
+            <!-- Mensajes -->
+            <div id="mensaje"></div>
+
+            <!-- Formulario -->
+            <div class="card shadow-lg border-0">
+                <div class="card-header" style="background: linear-gradient(135deg, #2E2E38 0%, #1E1E1E 100%); color: #FFE600;">
+                    <h5 class="mb-0">
+                        <i class="bi bi-clipboard-data"></i> Información del Usuario
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form id="createForm">
+                        @Html.AntiForgeryToken()
+
+                        <div class="row">
+                            <!-- Nombre Completo -->
+                            <div class="col-md-6 mb-3">
+                                <label for="NombreCompleto" class="form-label fw-bold">
+                                    <i class="bi bi-person"></i> Nombre Completo
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-person-circle"></i>
+                                    </span>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="NombreCompleto"
+                                           placeholder="Ej: Juan Pérez García"
+                                           required>
+                                </div>
+                                <small class="text-muted">Ingrese el nombre completo del usuario</small>
+                            </div>
+
+                            <!-- Nombre de Usuario -->
+                            <div class="col-md-6 mb-3">
+                                <label for="NombreUsuario" class="form-label fw-bold">
+                                    <i class="bi bi-at"></i> Nombre de Usuario
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-person-badge"></i>
+                                    </span>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="NombreUsuario"
+                                           placeholder="Ej: juanperez"
+                                           required>
+                                </div>
+                                <small class="text-muted">Usuario único para iniciar sesión</small>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Correo -->
+                            <div class="col-md-6 mb-3">
+                                <label for="Correo" class="form-label fw-bold">
+                                    <i class="bi bi-envelope"></i> Correo Electrónico
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-envelope-at"></i>
+                                    </span>
+                                    <input type="email"
+                                           class="form-control"
+                                           id="Correo"
+                                           placeholder="ejemplo@empresa.com"
+                                           required>
+                                </div>
+                                <small class="text-muted">Correo corporativo del usuario</small>
+                            </div>
+
+                            <!-- Contraseña -->
+                            <div class="col-md-6 mb-3">
+                                <label for="Password" class="form-label fw-bold" id="lbPassword">
+                                    <i class="bi bi-key"></i> Contraseña
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-lock-fill"></i>
+                                    </span>
+                                    <input type="password"
+                                           class="form-control"
+                                           id="Password"
+                                           placeholder="Mínimo 6 caracteres"
+                                           required>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="bi bi-eye" id="eyeIcon"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted">Contraseña segura para el usuario</small>
+                            </div>
+                        </div>
+
+                        <!-- Estatus -->
+                        <div class="row">
+                            <div class="col-12 mb-4">
+                                <div class="form-check form-switch" style="font-size: 1.1rem;">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           id="Estatus"
+                                           checked
+                                           style="cursor: pointer; width: 3rem; height: 1.5rem;">
+                                    <label class="form-check-label fw-bold" for="Estatus" style="margin-left: 0.5rem;">
+                                        <i class="bi bi-toggle-on text-success"></i> Usuario Activo
+                                    </label>
+                                    <br>
+                                    <small class="text-muted ms-5">El usuario podrá acceder al sistema</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="row">
+                            <div class="col-12">
+                                <hr class="my-4">
+                                <div class="d-flex justify-content-end gap-3">
+                                    <button type="reset" class="btn btn-secondary btn-lg">
+                                        <i class="bi bi-x-circle"></i> Limpiar
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-lg" id="btnGuardar">
+                                        <i class="bi bi-save"></i> Guardar Usuario
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Info adicional -->
+            <div class="alert alert-info mt-4 border-0" style="background-color: #e8f4f8;">
+                <i class="bi bi-info-circle-fill"></i>
+                <strong>Nota:</strong> Todos los campos marcados con <span class="text-danger">*</span> son obligatorios.
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    // Toggle mostrar/ocultar contraseña
+    document.getElementById("togglePassword").addEventListener("click", function () {
+        const passwordInput = document.getElementById("Password");
+        const eyeIcon = document.getElementById("eyeIcon");
+        
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.classList.remove("bi-eye");
+            eyeIcon.classList.add("bi-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            eyeIcon.classList.remove("bi-eye-slash");
+            eyeIcon.classList.add("bi-eye");
+        }
+    });
+
+    // Manejo del formulario
+    document.getElementById("createForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const btnGuardar = document.getElementById("btnGuardar");
+        const originalText = btnGuardar.innerHTML;
+        
+        // Deshabilitar botón y mostrar loading
+        btnGuardar.disabled = true;
+        btnGuardar.innerHTML = '<i class="bi bi-hourglass-split"></i> Guardando...';
+
+        const data = {
+            nombreCompleto: document.getElementById("NombreCompleto").value.trim(),
+            nombreUsuario: document.getElementById("NombreUsuario").value.trim(),
+            correo: document.getElementById("Correo").value.trim(),
+            password: document.getElementById("Password").value,
+            estatus: document.getElementById("Estatus").checked
+        };
+
+        try {
+            const response = await fetch("/Usuarios/Create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            const mensajeDiv = document.getElementById("mensaje");
+
+            if (result.success) {
+                mensajeDiv.innerHTML = `
+                    <div class="alert alert-success-custom alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <strong>¡Éxito!</strong> ${result.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+                document.getElementById("createForm").reset();
+                document.getElementById("Estatus").checked = true;
+                
+                // Scroll al mensaje
+                mensajeDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                mensajeDiv.innerHTML = `
+                    <div class="alert alert-danger-custom alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <strong>Error:</strong> ${result.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            document.getElementById("mensaje").innerHTML = `
+                <div class="alert alert-danger-custom alert-dismissible fade show" role="alert">
+                    <i class="bi bi-x-circle-fill"></i>
+                    <strong>Error:</strong> Ocurrió un problema al procesar la solicitud.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            console.error("Error:", error);
+        } finally {
+            // Restaurar botón
+            btnGuardar.disabled = false;
+            btnGuardar.innerHTML = originalText;
+        }
+    });
+</script>
