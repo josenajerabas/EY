@@ -7,6 +7,7 @@ namespace CapaNegocio.DTOs
 {
     public class RegistroDTO
     {
+        //Data Anotation
         [Required(ErrorMessage = "El nombre completo es requerido")]
         [StringLength(200)]
         [Display(Name = "Nombre Completo")]

@@ -7,6 +7,7 @@ namespace CapaNegocio.DTOs
 {
     public class LoginDTO
     {
+        //Data Anotation
         [Required(ErrorMessage = "El nombre de usuario es requerido")]
         [Display(Name = "Nombre de Usuario")]
         public string NombreUsuario { get; set; }

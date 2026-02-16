@@ -7,7 +7,9 @@ namespace CapaDato
 {
     public interface IRepository<T> where T : class
     {
+        //busca por Id 
         Task<T> GetByIdAsync(int id);
+        //Todos los registro
         Task<IEnumerable<T>> GetAllAsync();
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task<T> AddAsync(T entity);

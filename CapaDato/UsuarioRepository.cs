@@ -7,6 +7,7 @@ namespace CapaDato
 {
     public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
     {
+        //Creo el Constructor
         public UsuarioRepository(ApplicationDbContext context) : base(context)
         {
         }
