@@ -8,11 +8,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--  Meta tags para limpiar caché -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>Iniciar Sesión - EY Sistema</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/loginAuth.css" asp-append-version="true" />
- 
 </head>
 <body>
     <div class="login-container">
@@ -25,11 +28,22 @@
             <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
         </h2>
 
+        <!--  Mensaje de éxito -->
         @if (TempData["SuccessMessage"] != null)
         {
             <div class="alert-success">
                 <i class="bi bi-check-circle-fill"></i>
                 @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <!--  Mensaje de error (agregado) -->
+        @if (TempData["Error"] != null)
+        {
+            <div class="validation-summary-errors">
+                <ul>
+                    <li>@TempData["Error"]</li>
+                </ul>
             </div>
         }
 
@@ -42,7 +56,8 @@
             </div>
         }
 
-        <form asp-controller="Auth" asp-action="Login" method="post" id="loginForm">
+        <!-- Formulario con autocomplete="off" -->
+        <form asp-controller="Auth" asp-action="Login" method="post" id="loginForm" autocomplete="off">
             @Html.AntiForgeryToken()
 
             <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
@@ -53,52 +68,84 @@
                 </label>
                 <div class="input-wrapper">
                     <i class="bi bi-person-circle"></i>
-                    <input type="text" 
-                           asp-for="NombreUsuario" 
-                           class="form-control" 
-                           placeholder="Ingresa tu usuario" 
-                           autocomplete="username"
+                    <input type="text"
+                           asp-for="NombreUsuario"
+                           class="form-control"
+                           id="NombreUsuario"
+                           placeholder="Ingresa tu usuario"
+                           autocomplete="off"
+                           value=""
                            required>
+                    </div>
+                    <span asp-validation-for="NombreUsuario" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="NombreUsuario" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Password">
-                    <i class="bi bi-lock"></i> Contraseña
-                </label>
-                <div class="input-wrapper">
-                    <i class="bi bi-key-fill"></i>
-                    <input type="password" 
-                           asp-for="Password" 
-                           class="form-control" 
-                           placeholder="••••••••" 
-                           autocomplete="current-password"
-                           required>
+                <div class="form-group">
+                    <label asp-for="Password">
+                        <i class="bi bi-lock"></i> Contraseña
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="bi bi-key-fill"></i>
+                        <input type="password"
+                               asp-for="Password"
+                               class="form-control"
+                               id="Password"
+                               placeholder="••••••••"
+                               autocomplete="new-password"
+                               value=""
+                               required>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn-login" id="btnLogin">
+                        <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+                    </button>
+                </form>
+
+                <div class="footer">
+                    <p>¿No tienes cuenta? <a asp-controller="Usuarios" asp-action="Registrar">Regístrate aquí</a></p>
+                    <div class="back-home">
+                        <a asp-controller="Home" asp-action="Index">
+                            <i class="bi bi-house-door"></i> Volver al inicio
+                        </a>
+                    </div>
                 </div>
-                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
-            <button type="submit" class="btn-login" id="btnLogin">
-                <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
-            </button>
-        </form>
-
-        <div class="footer">
-            <p>¿No tienes cuenta? <a asp-controller="Usuarios" asp-action="Registrar">Regístrate aquí</a></p>
-            <div class="back-home">
-                <a asp-controller="Home" asp-action="Index">
-                    <i class="bi bi-house-door"></i> Volver al inicio
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+            <script src="~/lib/jquery/dist/jquery.min.js"></script>
+            <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+            <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     
-    <script src="~/js/auth/login.js" asp-append-version="true"></script>
+            <script src="~/js/auth/login.js" asp-append-version="true"></script>
 
-</body>
-</html>
+            <!-- Script adicional para limpiar campos -->
+            <script>
+                    // Limpiar campos al cargar la página
+                    $(document).ready(function() {
+                        // Limpiar campos
+                        $('#NombreUsuario').val('');
+                        $('#Password').val('');
+            
+                        // Enfocar el primer campo
+                        $('#NombreUsuario').focus();
+                    });
+
+                    // Limpiar campos después de que el navegador intente autocompletar
+                    window.onload = function() {
+                        setTimeout(function() {
+                            document.getElementById("NombreUsuario").value = "";
+                            document.getElementById("Password").value = "";
+                        }, 100);
+                    };
+
+                    // Limpiar si vuelves con el botón "atrás"
+                    window.addEventListener('pageshow', function(event) {
+                        if (event.persisted) {
+                            document.getElementById("NombreUsuario").value = "";
+                            document.getElementById("Password").value = "";
+                        }
+                    });
+            </script>
+        </body>
+    </html>

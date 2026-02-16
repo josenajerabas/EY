@@ -2,6 +2,50 @@
     ViewData["Title"] = "Home Page";
 }
 
+
+<link rel="stylesheet" href="~/css/indexHome.css" asp-append-version="true" />
+
+<!-- Carrusel automático -->
+<div class="container mt-4 mb-5">
+    <div id="imageCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+
+        <div class="carousel-inner rounded-4 shadow">
+
+            <div class="carousel-item active">
+                <img src="https://www.ey.com/adobe/dynamicmedia/deliver/dm-aid--2a492ed9-e1be-4c38-ae83-8c9c80fbcdf2/ey-virtual-tablet.png?preferwebp=true&quality=85"
+                     class="d-block w-100"
+                     style="height:350px; object-fit:cover;">
+            </div>
+
+            <div class="carousel-item">
+                <img src="https://www.ey.com/adobe/dynamicmedia/deliver/dm-aid--148a7a7a-9af4-4288-8e31-3876485e5490/ey-global-tax-platform-welcome-screen-laptop-1800x1200.png?quality=85&preferwebp=true"
+                     class="d-block w-100"
+                     style="height:350px; object-fit:cover;">
+            </div>
+
+            <div class="carousel-item">
+                <img src="https://www.ey.com/adobe/dynamicmedia/deliver/dm-aid--ba685a9c-5bc3-45b7-af3d-e720fce2262e/ey-ficci-risk-survey-banner-2026.png?quality=85&preferwebp=true"
+                     class="d-block w-100"
+                     style="height:350px; object-fit:cover;">
+            </div>
+
+        </div>
+
+        <!-- Flechas -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+
+    </div>
+</div>
+
+
+
+
 <!-- Hero Section -->
 <div class="hero-section">
     <div class="container">
@@ -61,7 +105,7 @@
     </div>
 </div>
 
-<!-- Sección de características -->
+<!-- Features Section -->
 <div class="features-section py-5">
     <div class="container">
         <div class="text-center mb-5">

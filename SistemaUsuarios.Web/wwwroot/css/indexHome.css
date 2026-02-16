@@ -1,0 +1,80 @@
+﻿
+/* Estilos del carrusel */
+#imageCarousel {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.carousel-image {
+    height: 400px;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+.carousel-caption {
+    background: rgba(46, 46, 56, 0.8);
+    border-radius: 10px;
+    padding: 1rem 2rem;
+    bottom: 2rem;
+}
+
+    .carousel-caption h3 {
+        color: #FFE600;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .carousel-caption p {
+        color: white;
+        margin-bottom: 0;
+    }
+
+.carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #FFE600;
+    border: 2px solid white;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(255, 230, 0, 0.8);
+    border-radius: 50%;
+    padding: 1.5rem;
+}
+
+/* Estilos existentes */
+.text-ey-yellow {
+    color: #FFE600;
+}
+
+.badge-custom {
+    background: linear-gradient(135deg, #FFE600 0%, #E6CF00 100%);
+    color: #2E2E38;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.stats-row {
+    display: flex;
+    gap: 3rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .carousel-image {
+        height: 250px;
+    }
+
+    .stats-row {
+        gap: 1.5rem;
+    }
+}
+
+

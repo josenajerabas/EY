@@ -25,6 +25,10 @@ namespace SistemaUsuarios.Web.Controllers
             {
                 return RedirectToAction("Index", "Dashboard");
             }
+            // Limpiar caché del navegador
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
             return View();
         }
 
@@ -35,6 +39,7 @@ namespace SistemaUsuarios.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                TempData["Error"] = "Por favor, completa todos los campos";
                 return View(model);
             }
 
@@ -85,6 +90,10 @@ namespace SistemaUsuarios.Web.Controllers
             {
                 return RedirectToAction("Index", "Dashboard");
             }
+            // Limpiar caché
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
             return View();
         }
 
@@ -115,6 +124,10 @@ namespace SistemaUsuarios.Web.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //Limpiar cahe
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
             return RedirectToAction("Login");
         }
 

@@ -17,7 +17,7 @@
                     </h1>
                     <p class="text-muted">Complete el formulario para registrar un nuevo usuario</p>
                 </div>
-                  @if (User.Identity.IsAuthenticated)
+                @if (User.Identity.IsAuthenticated)
                 {
                     <a href="@Url.Action("Lista", "Usuarios")" class="btn btn-secondary">
                         <i class="bi bi-arrow-left"></i> Volver
@@ -36,7 +36,8 @@
                     </h5>
                 </div>
                 <div class="card-body p-4">
-                    <form id="createForm">
+                    <!-- ✅ Agregado autocomplete="off" -->
+                    <form id="createForm" autocomplete="off">
                         @Html.AntiForgeryToken()
 
                         <div class="row">
@@ -54,6 +55,8 @@
                                            class="form-control"
                                            id="NombreCompleto"
                                            placeholder="Ej: Juan Pérez García"
+                                           autocomplete="off"
+                                           value=""
                                            required>
                                 </div>
                                 <small class="text-muted">Ingrese el nombre completo del usuario</small>
@@ -73,6 +76,8 @@
                                            class="form-control"
                                            id="NombreUsuario"
                                            placeholder="Ej: juanperez"
+                                           autocomplete="off"
+                                           value=""
                                            required>
                                 </div>
                                 <small class="text-muted">Usuario único para iniciar sesión</small>
@@ -94,6 +99,8 @@
                                            class="form-control"
                                            id="Correo"
                                            placeholder="ejemplo@empresa.com"
+                                           autocomplete="off"
+                                           value=""
                                            required>
                                 </div>
                                 <small class="text-muted">Correo corporativo del usuario</small>
@@ -112,13 +119,15 @@
                                     <input type="password"
                                            class="form-control"
                                            id="Password"
-                                           placeholder="Mínimo 6 caracteres"
+                                           placeholder="Mínimo 14 caracteres"
+                                           autocomplete="new-password"
+                                           value=""
                                            required>
                                     <button class="btn btn-outline-secondary" type="button" id="togglePassword">
                                         <i class="bi bi-eye" id="eyeIcon"></i>
                                     </button>
                                 </div>
-                                <small class="text-muted">Contraseña segura para el usuario</small>
+                                <small class="text-muted">Debe incluir mayúscula, minúscula, número y carácter especial</small>
                             </div>
                         </div>
 
@@ -168,10 +177,28 @@
     </div>
 </div>
 
-
-
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
+    // Limpiar campos al cargar la página
+    $(document).ready(function() {
+        limpiarCampos();
+        $('#NombreCompleto').focus();
+    });
+
+    // Función para limpiar todos los campos
+    function limpiarCampos() {
+        $('#NombreCompleto').val('');
+        $('#NombreUsuario').val('');
+        $('#Correo').val('');
+        $('#Password').val('');
+        $('#Estatus').prop('checked', true);
+    }
+
+    //  Limpiar después de que el navegador intente autocompletar
+    window.onload = function() {
+        setTimeout(limpiarCampos, 100);
+    };
+
     // Toggle mostrar/ocultar contraseña
     document.getElementById("togglePassword").addEventListener("click", function () {
         const passwordInput = document.getElementById("Password");
@@ -228,8 +255,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 `;
+                
+                // Limpiar formulario después de éxito
                 document.getElementById("createForm").reset();
-                document.getElementById("Estatus").checked = true;
+                limpiarCampos(); // Limpiar manualmente también
                 
                 // Scroll al mensaje
                 mensajeDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
