@@ -113,7 +113,7 @@ namespace SistemaUsuario.CapaNegocio
                 usuario.Password = _passwordService.HashPassword(usuarioDto.Password);
             }
 
-            //sdfsd
+            
             var result = await _usuarioRepository.UpdateAsync(usuario);
             return MapToDTO(result);
         }
